@@ -7,18 +7,15 @@ spring:
     virtual: # Sử dụng virtual threads (Project Loom) nếu đang chạy trên Java 19+
       enabled: true # Kích hoạt virtual threads
   datasource:
-    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME}?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    url: jdbc:mysql://localhost:3306/spring?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: root
+    password: root
     driver-class-name: com.mysql.cj.jdbc.Driver # Tên lớp driver cho MySQL
   jpa:
     hibernate:
       ddl-auto: none  # Tùy chọn: none (Không làm gì), validate (Chỉ kiểm tra), update (Cập nhật), create (Tạo), create-drop (Tạo và xóa khi đóng ứng dụng)
   flyway:
      enabled: true
-     baseline-on-migrate: true                # Nếu DB đã tồn tại, tạo baseline
-     baseline-version: 0                      # Version của baseline
-
   data:
     redis:
       host: localhost
@@ -40,18 +37,17 @@ cache:
 
 # JWT config
 app:
-  name: demo
   cors:
     allowed-origins: "*"
   jwt:
-    secret: ${JWT_SECRET}
-    expiration: ${JWT_EXPIRATION:300000}
-    refresh_expiration: ${JWT_REFRESH_EXPIRATION:1800000} # 30 phút (milliseconds)
+    secret: ""
+    expiration: 300000
+    refresh_expiration: 1800000 # 30 phút (milliseconds)
 
 server:
-  port: ${SERVER_PORT:8080}
+  port: 8080
 
 firebase:
   service-account:
-    enabled: true
-    path: ${FIREBASE_SERVICE_ACCOUNT_PATH:file:/opt/configs/firebase-service-account.json}
+    enabled: false
+    path: classpath:firebase-service-account.json

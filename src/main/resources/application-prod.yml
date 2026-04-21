@@ -1,7 +1,30 @@
 spring:
+  datasource:
+    url: jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}/${MYSQL_DB_NAME}?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: ${MYSQL_USERNAME}
+    password: ${MYSQL_PW}
   flyway:
     enabled: true
+    baseline-on-migrate: true                # Nếu DB đã tồn tại, tạo baseline
+    baseline-version: 0
     clean-disabled: true                     # Chặn flyway clean trên prod
     validate-on-migrate: true                # Kiểm tra checksum trước khi chạy
-    out-of-order: false                      # Không cho phép chạy migration lệch thứ tự
+    out-of-order: false                      # Không cho phép chạy migration lệch thứ tự# Version của baseline
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
+      password: ${REDIS_PW}
 
+app:
+  jwt:
+    secret: ${JWT_SECRET}
+    expiration: ${JWT_EXPIRATION:300000}
+
+server:
+  port: ${SERVER_PORT:9000}
+
+firebase:
+  service-account:
+    enabled: true
+    path: file:${FIREBASE_SERVICE_ACCOUNT_PATH}

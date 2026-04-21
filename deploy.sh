@@ -3,13 +3,13 @@
 
 set -e  # dừng ngay nếu có lệnh nào lỗi
 
-APP_DIR="/opt/java-spring-boot"
+APP_DIR="/opt/apps/myapp"
 SERVICE_NAME="java-spring-boot"
 JAR_PATTERN="build/libs/*.jar"
 
 echo "==> [1/4] Pulling latest code..."
 cd $APP_DIR
-git pull origin main
+git pull origin master
 
 echo "==> [2/4] Building JAR..."
 ./gradlew bootJar -x test --no-daemon --quiet
