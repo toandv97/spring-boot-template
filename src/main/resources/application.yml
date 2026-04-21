@@ -1,0 +1,57 @@
+spring:
+  application:
+    name: demo
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:dev}
+  threads: # Cấu hình thread pool cho Spring Boot
+    virtual: # Sử dụng virtual threads (Project Loom) nếu đang chạy trên Java 19+
+      enabled: true # Kích hoạt virtual threads
+  datasource:
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME}?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver # Tên lớp driver cho MySQL
+  jpa:
+    hibernate:
+      ddl-auto: none  # Tùy chọn: none (Không làm gì), validate (Chỉ kiểm tra), update (Cập nhật), create (Tạo), create-drop (Tạo và xóa khi đóng ứng dụng)
+  flyway:
+     enabled: true
+     baseline-on-migrate: true                # Nếu DB đã tồn tại, tạo baseline
+     baseline-version: 0                      # Version của baseline
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password: ""          # để trống nếu không có password
+      timeout: 2000ms       # connection timeout
+      lettuce:
+        pool:
+          max-active: 10    # max connection trong pool
+          max-idle: 5
+          min-idle: 1
+          max-wait: 1000ms  # thời gian chờ lấy connection
+
+cache:
+  type: redis
+  redis:
+    time-to-live: 300000  # TTL mặc định = 5 phút (ms)
+    cache-null-values: false
+
+# JWT config
+app:
+  name: demo
+  cors:
+    allowed-origins: "*"
+  jwt:
+    secret: ${JWT_SECRET}
+    expiration: ${JWT_EXPIRATION:300000}
+    refresh_expiration: ${JWT_REFRESH_EXPIRATION:1800000} # 30 phút (milliseconds)
+
+server:
+  port: ${SERVER_PORT:8080}
+
+firebase:
+  service-account:
+    enabled: true
+    path: ${FIREBASE_SERVICE_ACCOUNT_PATH:file:/opt/configs/firebase-service-account.json}

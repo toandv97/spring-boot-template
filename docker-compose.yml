@@ -1,0 +1,46 @@
+services:
+  db:
+    image: mysql:8.4 # Bản LTS mới nhất
+    container_name: mysql_dev
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: local_db
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: dev_user
+      MYSQL_PASSWORD: dev_password
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build: .
+    container_name: spring_boot_hot_reload
+    ports:
+      - "8080:8080"
+      - "5005:5005"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/local_db
+      - SPRING_DATASOURCE_USERNAME=dev_user
+      - SPRING_DATASOURCE_PASSWORD=dev_password
+      # Giúp DevTools nhận biết môi trường container
+      - SPRING_DEVTOOLS_RESTART_ENABLED=true
+    volumes:
+      - .:/app # Mount source code để đồng bộ file
+    develop:
+      watch:
+        - path: ./src
+          action: sync
+          target: /app/src
+        - path: ./build.gradle
+          action: rebuild # Rebuild lại toàn bộ nếu thay đổi dependency
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  mysql_data:

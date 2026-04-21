@@ -1,0 +1,7 @@
+spring:
+  flyway:
+    enabled: true
+    clean-disabled: true                     # Chặn flyway clean trên prod
+    validate-on-migrate: true                # Kiểm tra checksum trước khi chạy
+    out-of-order: false                      # Không cho phép chạy migration lệch thứ tự
+

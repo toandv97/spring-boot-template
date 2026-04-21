@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Firebase Google Sign-In Demo</title>
+    <!-- Firebase v8 SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+</head>
+<body>
+<h2>Firebase Google Sign-In Demo</h2>
+<button id="loginBtn">Đăng nhập bằng Google</button>
+
+<p id="token"></p>
+
+<script>
+    // ⚠️ Thay thế bằng config của project bạn trong Firebase Console
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    const firebaseConfig = {
+        apiKey: "AIzaSyDb21u6nhaJrhCeQd7nJDC0-R8ibhmc1lM",
+        authDomain: "spring-boot-31503.firebaseapp.com",
+        projectId: "spring-boot-31503",
+        storageBucket: "spring-boot-31503.firebasestorage.app",
+        messagingSenderId: "852135187800",
+        appId: "1:852135187800:web:4658116109d8cc32ff012d",
+        measurementId: "G-KFX71JGJKH"
+    };
+
+    // Khởi tạo Firebase
+    firebase.initializeApp(firebaseConfig);
+
+    // Đăng nhập bằng Google
+    document.getElementById("loginBtn").addEventListener("click", () => {
+        const provider = new firebase.auth.GoogleAuthProvider();
+        firebase.auth().signInWithPopup(provider)
+            .then(result => {
+                return result.user.getIdToken();
+            })
+            .then(token => {
+                document.getElementById("token").textContent(token)
+            })
+            .catch(error => {
+                console.error("Login error:", error);
+            });
+    });
+</script>
+</body>
+</html>
