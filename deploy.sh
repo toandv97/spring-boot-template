@@ -4,20 +4,24 @@
 set -e  # dừng ngay nếu có lệnh nào lỗi
 
 APP_DIR="/opt/apps/myapp"
+VAR_FILE="/opt/configs/myapp.env"
 SERVICE_NAME="myapp"
 JAR_PATTERN="build/libs/*.jar"
 
-echo "==> [1/4] Pulling latest code..."
+echo "==> [1/5] Pulling latest code..."
 cd $APP_DIR
 git pull origin master
 
-echo "==> [2/4] Building JAR..."
+echo "==> [2/5] Building JAR..."
 ./gradlew bootJar -x test --no-daemon --quiet
 
-echo "==> [3/4] Restarting service..."
+echo "==> [3/5] Setting enviroment variables"
+set -a && source $VAR_FILE && set +a
+
+echo "==> [4/5] Restarting service..."
 sudo systemctl restart $SERVICE_NAME
 
-echo "==> [4/4] Waiting for app to start..."
+echo "==> [5/5] Waiting for app to start..."
 sleep 10
 
 # Kiểm tra app đã lên chưa
