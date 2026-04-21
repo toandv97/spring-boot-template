@@ -4,7 +4,7 @@
 set -e  # dừng ngay nếu có lệnh nào lỗi
 
 APP_DIR="/opt/apps/myapp"
-SERVICE_NAME="java-spring-boot"
+SERVICE_NAME="myapp"
 JAR_PATTERN="build/libs/*.jar"
 
 echo "==> [1/4] Pulling latest code..."
