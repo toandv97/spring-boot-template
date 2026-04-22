@@ -1,5 +1,7 @@
 #!/bin/bash
 # /opt/myapp/deploy.sh
+# Ưu điểm lớn nhất: Rollback cực nhanh vì image cũ vẫn còn trong registry.
+# VPS không cần JDK hay Gradle — cực kỳ nhẹ.
 
 set -e
 
